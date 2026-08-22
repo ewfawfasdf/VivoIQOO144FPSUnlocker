@@ -48,9 +48,9 @@ class FpsService : Service() {
 
     private fun toggleFps() {
         try {
-            val currentValue = Settings.System.getString(contentResolver, "gamecube_frame_interpolation_for_sr")
-            val isChecked = currentValue != "1:1::72:144"
-            Settings.System.putString(contentResolver, "gamecube_frame_interpolation_for_sr", if (isChecked) "1:1::72:144" else "0:-1:0:0:0")
+            val currentValue = Settings.System.getString(contentResolver, "peak_refresh_rate")
+            val isChecked = currentValue != "1"
+            Settings.System.putString(contentResolver, "peak_refresh_rate", if (isChecked) "1" else "120.00001")
             
             // Notify UI if it's running
             sendBroadcast(Intent("com.dolbaeb1488company.fpsunlocker.UPDATE_UI").putExtra("isChecked", isChecked))
@@ -64,8 +64,8 @@ class FpsService : Service() {
     }
 
     private fun buildNotification(): Notification {
-        val currentValue = Settings.System.getString(contentResolver, "gamecube_frame_interpolation_for_sr")
-        val isEnabled = currentValue == "1:1::72:144"
+        val currentValue = Settings.System.getString(contentResolver, "peak_refresh_rate")
+        val isEnabled = currentValue == "1"
         val statusText = if (isEnabled) getString(R.string.on) else getString(R.string.off)
         
         val intent = Intent(this, MainActivity::class.java)
